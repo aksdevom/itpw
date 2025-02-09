@@ -1,0 +1,15 @@
+/* ...existing styles... */
+
+.sidebar-header {
+    padding: 20px;
+    background: #343a40;
+    text-align: center;
+}
+
+.sidebar-header h3 {
+    color: #fff;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* ...rest of existing styles... */

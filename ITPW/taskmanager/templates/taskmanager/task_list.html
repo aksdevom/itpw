@@ -1,0 +1,117 @@
+{% extends 'taskmanager/base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search tasks..." 
+                           value="{{ search_query }}">
+                </div>
+                <div class="col-md-2">
+                    <select name="status" class="form-select">
+                        <option value="">All Status</option>
+                        {% for status, label in status_choices %}
+                        <option value="{{ status }}" {% if status == status_filter %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="priority" class="form-select">
+                        <option value="">All Priorities</option>
+                        {% for priority, label in priority_choices %}
+                        <option value="{{ priority }}" {% if priority == priority_filter %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="sort_by" class="form-select">
+                        <option value="due_date" {% if sort_by == 'due_date' %}selected{% endif %}>Due Date ↑</option>
+                        <option value="-due_date" {% if sort_by == '-due_date' %}selected{% endif %}>Due Date ↓</option>
+                        <option value="priority" {% if sort_by == 'priority' %}selected{% endif %}>Priority ↑</option>
+                        <option value="-priority" {% if sort_by == '-priority' %}selected{% endif %}>Priority ↓</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    <a href="{% url 'task_list' %}" class="btn btn-secondary">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tasks Table -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Tasks</h5>
+            <a href="{% url 'task_create' %}" class="btn btn-primary">New Task</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Project</th>
+                            <th>Due Date</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %}
+                        <tr>
+                            <td><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></td>
+                            <td>{{ task.project.name }}</td>
+                            <td>{{ task.due_date|date:"M d, Y" }}</td>
+                            <td><span class="badge bg-{{ task.priority|lower }}">{{ task.priority }}</span></td>
+                            <td><span class="badge bg-{{ task.status|lower }}">{{ task.status }}</span></td>
+                            <td>
+                                <a href="{% url 'task_update' task.pk %}" class="btn btn-sm btn-info">Edit</a>
+                                <a href="{% url 'task_delete' task.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No tasks found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if tasks.has_other_pages %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if tasks.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ tasks.previous_page_number }}&status={{ status_filter }}&priority={{ priority_filter }}&search={{ search_query }}&sort_by={{ sort_by }}">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for num in tasks.paginator.page_range %}
+            <li class="page-item {% if tasks.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}&status={{ status_filter }}&priority={{ priority_filter }}&search={{ search_query }}&sort_by={{ sort_by }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+
+            {% if tasks.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ tasks.next_page_number }}&status={{ status_filter }}&priority={{ priority_filter }}&search={{ search_query }}&sort_by={{ sort_by }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

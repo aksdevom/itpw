@@ -1,0 +1,53 @@
+{% extends 'taskmanager/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>{{ task.title }}</h1>
+            <div class="btn-group">
+                <a href="{% url 'task_update' task.pk %}" class="btn btn-primary">Edit Task</a>
+                <a href="{% url 'task_delete' task.pk %}" class="btn btn-danger">Delete Task</a>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <p class="card-text">{{ task.description }}</p>
+                <hr>
+                <p class="mb-1"><strong>Status:</strong> {{ task.get_status_display }}</p>
+                <p class="mb-1"><strong>Priority:</strong> {{ task.get_priority_display }}</p>
+                <p class="mb-1"><strong>Assigned to:</strong> {{ task.assigned_to.username }}</p>
+                <p class="mb-1"><strong>Due date:</strong> {{ task.due_date }}</p>
+                <p class="mb-1"><strong>Project:</strong> <a href="{% url 'project_detail' task.project.pk %}">{{ task.project.name }}</a></p>
+            </div>
+        </div>
+
+        <h3>Comments</h3>
+        {% for comment in comments %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p class="card-text">{{ comment.content }}</p>
+                    <small class="text-muted">By {{ comment.author.username }} on {{ comment.created_at }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4>Add Comment</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary">Add Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Task Manager{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="company-brand text-center py-3" style="background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%);">
+                <div class="d-flex align-items-center justify-content-center">
+                    <i class="fas fa-cube text-primary me-2" style="font-size: 1.5rem;"></i>
+                    <h2 class="text-white mb-0" style="font-size: 1.6rem; font-weight: 800;">ITPW</h2>
+                </div>
+                <div class="text-primary mt-1" style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">
+                    Task Management
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-profile-sidebar text-center mb-2">
+                    <div class="bg-dark py-1 px-2 rounded mb-1">
+                        <h5 class="text-white fs-5 fw-bolder mb-0">{{ user.username }}</h5>
+                    </div>
+                    <small class="text-muted" style="font-size: 0.75rem;">{{ user.email }}</small>
+                    <div class="mt-2">
+                        <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-primary py-0 px-2" style="font-size: 0.75rem;">View Profile</a>
+                        <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size: 0.75rem;">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <a href="{% url 'dashboard' %}">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li class="{% if request.resolver_match.url_name == 'project_list' %}active{% endif %}">
+                    <a href="{% url 'project_list' %}">
+                        <i class="fas fa-project-diagram"></i> Projects
+                    </a>
+                </li>
+                <li class="{% if request.resolver_match.url_name == 'task_list' %}active{% endif %}">
+                    <a href="{% url 'task_list' %}">
+                        <i class="fas fa-tasks"></i> Tasks
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Content -->
+        <div id="content">
+            <nav class="navbar navbar-dark">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-dark d-md-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="container-fluid p-4">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mobile sidebar toggle only
+        document.getElementById('sidebarCollapse')?.addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('content').classList.toggle('active');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Keep profile menu expanded by default
+            const profileSubmenu = document.getElementById('profileSubmenu');
+            const profileToggle = document.querySelector('[href="#profileSubmenu"]');
+            
+            // Handle clicks on other menu items
+            document.querySelectorAll('#sidebar ul li:not(.profile-section) a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (profileSubmenu.classList.contains('show')) {
+                        profileSubmenu.classList.remove('show');
+                        profileToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        });
+    </script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

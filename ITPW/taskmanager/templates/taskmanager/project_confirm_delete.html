@@ -1,0 +1,22 @@
+{% extends 'taskmanager/base.html' %}
+
+{% block title %}Delete Project{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Delete Project</h2>
+                <p>Are you sure you want to delete the project "{{ project.name }}"?</p>
+                <p class="text-danger">This action cannot be undone!</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete Project</button>
+                    <a href="{% url 'project_detail' project.pk %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

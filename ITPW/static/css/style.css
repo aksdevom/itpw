@@ -1,0 +1,233 @@
+:root {
+    --primary-color: #1976d2;
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e0e0;
+    --sidebar-width: 260px;
+    --header-height: 60px;
+    --spacing-unit: 1rem;
+}
+
+/* Base styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Layout */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+#sidebar {
+    width: var(--sidebar-width);
+    position: fixed;
+    height: 100vh;
+    background: var(--background-color);
+    border-right: 1px solid var(--border-color);
+    padding: var(--spacing-unit) 0;
+}
+
+#sidebar .sidebar-header {
+    padding: var(--spacing-unit) var(--spacing-unit) calc(var(--spacing-unit) * 2);
+    margin-bottom: var(--spacing-unit);
+    border-bottom: 1px solid var(--border-color);
+}
+
+#sidebar ul.components {
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar ul li {
+    margin-bottom: 0.25rem;
+}
+
+#sidebar ul li a {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+    transition: all 0.3s ease !important;
+}
+
+#sidebar ul li a i {
+    width: 20px;
+    margin-right: 10px;
+}
+
+#sidebar ul li.active > a,
+#sidebar ul li a:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Cards */
+.card {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* Stats cards */
+.stats-card {
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.stats-card h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.stats-card p {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+}
+
+.stats-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    opacity: 0.8;
+}
+
+/* Tables */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.table th {
+    border-bottom: 2px solid var(--border-color);
+}
+
+.table td {
+    border-top: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.table thead th {
+    background: #f8f9fa;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+}
+
+/* Forms */
+.form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+/* Content area */
+#content {
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+    padding: var(--spacing-unit);
+    background: #f5f5f5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #content {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+/* Remove all transitions and transforms */
+* {
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Remove shadows */
+.card, .btn, .stats-card {
+    box-shadow: none !important;
+}
+
+/* Dashboard layout */
+.dashboard-container {
+    padding: var(--spacing-unit);
+}
+
+.dashboard-container .row {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+/* Re-enable important transitions */
+.sidebar-transition {
+    transition: all 0.3s ease !important;
+}
+
+/* Status and Priority Badges */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.badge.bg-todo { background-color: #6c757d; }
+.badge.bg-in-progress { background-color: #ffc107; }
+.badge.bg-done { background-color: #28a745; }
+.badge.bg-review { background-color: #17a2b8; }
+
+.badge.bg-high { background-color: #dc3545; }
+.badge.bg-medium { background-color: #fd7e14; }
+.badge.bg-low { background-color: #28a745; }
+
+/* Project Status Badges */
+.badge.bg-planning { background-color: #6c757d; }
+.badge.bg-in_progress { background-color: #007bff; }
+.badge.bg-on_hold { background-color: #ffc107; }
+.badge.bg-completed { background-color: #28a745; }
+.badge.bg-cancelled { background-color: #dc3545; }
+
+/* Progress Bar */
+.progress {
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+    border-radius: 4px;
+}
+
+/* Table Links */
+.table a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.table a:hover {
+    text-decoration: underline;
+}
